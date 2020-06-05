@@ -1,0 +1,142 @@
+.serif {
+    font-family: "Times New Roman", Times, serif;
+  }
+  
+  .sansserif {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .monospace {
+    font-family: "Lucida Console", Courier, monospace;
+  }
+  .divider{
+    position:absolute;
+    left:50%;
+    top:10%;
+    bottom:10%;
+    border-left:1px solid white;
+}
+
+.navbar-bg{
+  padding-left: 30%;
+  padding-right: 30%;
+}
+
+.navbar-element{
+  width: 75%;
+}
+
+.navbar-login{
+   width: 25%;
+   text-align: right;
+}
+
+.navbar-content{
+  height: 90px;
+  width: 100%;
+}
+
+.body-content{
+  height: calc(100% - 90px);
+}
+
+.navbar-links{
+  display: inline-flex;
+  width: 100%;
+  text-align: left;
+}
+
+.logo-element{
+  width: auto;
+}
+
+.logo-element-image{
+
+}
+
+.logo-element-text{
+  font-weight: bolder;
+  color: white; height: auto;
+  align-self: center;
+  margin-left: 10px;
+}
+
+.link-element{
+  height: 100%;
+  width: 300;
+  padding-top: 23px;
+}
+
+.link-element-text{
+  color: white; 
+  text-decoration: underline; 
+}
+
+@media only screen and (max-width: 650px) {
+  /* For mobile phones: */
+    .navbar-element {
+    width: 100%;
+  }
+
+  .navbar-login{
+   width: 100%;
+  }
+  .navbar-content{
+    height: 170px;
+    width: 100%;
+  }
+  .body-content{
+    height: calc(100% - 170px);
+  }
+  .navbar-links{
+    display: block;
+    width: 100%;
+  }
+  .link-element{
+    text-align: center;
+    width: 100%;
+    height: auto;
+    padding-top: 5px;
+    padding-bottom: 15px;
+
+  }
+
+  .logo-element{
+    text-align: center;
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  /* For mobile phones: */
+    .navbar-element {
+    width: 100%;
+  }
+
+  .navbar-login{
+   width: 100%;
+  }
+  .navbar-content{
+    height: 215px;
+    width: 100%;
+  }
+  .body-content{
+    height: calc(100% - 215px);
+  }
+  .navbar-links{
+    display: block;
+    width: 100%;
+  }
+  .link-element{
+    text-align: center;
+    width: 100%;
+    height: auto;
+    padding-top: 5px;
+    padding-bottom: 15px;
+  }
+
+  .logo-element{
+    text-align: center;
+    width: 100%;
+  }
+}

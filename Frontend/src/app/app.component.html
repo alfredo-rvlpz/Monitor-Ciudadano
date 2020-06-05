@@ -1,0 +1,41 @@
+<div class="navbar-content">
+  <!--CONTENEDOR DE LA NAVBAR-->
+  <nav class="navbar navbar-light navbar-expand-lg " style="background-color: #29292c; height: 100%;">
+    <!--NAVBAR-->
+    <div class="d-flex navbar-element">
+      <div class="navbar-links">
+        <!--Logo y letrero de Monitor ciudadano-->
+        <div class="logo-element">
+          <a class="logo-element-image" href="http://consejociudadanobc.org"><img src="http://monitor.consejociudadanobc.org/images/logocc.png"></a>
+          <a class="navbar-brand sansserif logo-element-text" [routerLink]="['']" href="http://monitor.consejociudadanobc.org"><h1 class="my-auto sansserif">Monitor ciudadano</h1></a>
+        </div>
+        <!--Link a la pagina principal de consejo ciudadano-->
+        <div class="link-element">
+          <a class="link-element-text" href="http://consejociudadanobc.org">Consejo ciudadano</a>  
+        </div>
+      </div>
+    </div>
+    <!--Apartado de los botones de inciar y cerrar sesion de facebook-->
+    <div class="d-flex justify-content-end navbar-login">
+      <div class="btn-group " *ngIf="loggedIn" >
+        <button type="button" class="btn btn-secundary d-flex" style="background-color: #3d2e4d;color: white">
+          <img height="30px" style="border-radius: 50%;" mat-card-image [src]="user.photoUrl" alt="My Facebook Photo">
+          <h4 class="my-auto ml-2 sansserif">  {{user.firstName}} {{user.lastName}} </h4>
+        </button>
+        <button type="button" class="btn d-flex dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #3d2e4d;color: white">
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu" style="background-color: #3d2e4d;text-align: right;padding-right: 15px;">
+          <button type="button" (click)="signOut()" *ngIf="loggedIn" class="dropdown-item sansserif" style="background-color: #3d2e4d; color: white;">Cerrar sesión</button>
+        </div>
+      </div>
+      <div class="my-auto">
+        <button type="button" (click)="signInWithFB()" *ngIf="!loggedIn" mat-flat-button style="color: white;background-color: #3d2e4d;">Inicia sesión con FB</button>
+      </div>
+    </div>
+  </nav>
+</div>
+<div class="body-content">
+  <router-outlet></router-outlet>  
+</div>
+

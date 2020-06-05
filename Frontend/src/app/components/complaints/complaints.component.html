@@ -1,0 +1,106 @@
+<div class="complainmain row mw-100"> 
+  <div class="complainbar"><!--Barra de quejas corresponde a la seccion al lado izquierdo del mapa-->
+    <br>
+    <div class="form-group">
+      <label>Ingrese una dirección</label>
+      <!-- Es un input text que tiene implementado el autocomplete de lugares de googlemaps-->
+      <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Buscar una ubicación" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+    </div><hr>
+    <div style="text-align: center;">
+      <label style="width: 100%;text-align: left;">Buscar por categoria</label>
+      <!-- DropDownList que muestra las categorias recuperadas de la base de datos-->
+      <select class="form-control mb-1" name="slFilter" [(ngModel)]="filter" (change)="getComplaints()" #slFilter="ngModel" >
+        <option [value]="0">Todas</option>
+        <option *ngFor="let item of categories" [value]="item.id" >{{ item.name }}</option>
+      </select>
+      <!-- CheckBox que indica que solo quiere visualizar las quejas creadas por el usuario-->
+      <mat-checkbox *ngIf="user!=null" name="onlyUserCheck" [(ngModel)]="onlyUser" (change)="getComplaints()" #onlyUserCheck="ngModel">Solo mis quejas</mat-checkbox>
+    </div><hr>
+    <div> <!--Nueva queja-->
+      <div *ngIf="user==null">
+        Inicia sesión para que puedas registrar una queja
+      </div>
+      <div *ngIf="newMarker===false&&user!=null">
+        <button type="button" class="btn btn-primary" style="width: 100%;" (click)="setMarker()">Agregar queja</button>
+      </div>
+      <div *ngIf="newMarker===true&&user!=null">
+        <p class="">1.-Primero ubique el marcador en la ubación de la queja</p>
+        <p class="">2.-Despues seleccione el botón para llenar la queja</p>
+        <p class=""><small>*Ingresar una dirección en la barra de busqueda posicionara el marcador en ese lugar</small></p>
+        <button type="button" class="btn btn-secondary mr-2" style="width: 100%;margin-bottom: 10px;background-color: #b4b4b3;border:#b4b4b3;" (click)="cancelMarker()">Cancelar</button>
+        <button type="button" class="btn btn-primary" style="width: 100%;" (click)="fillComplain(mdlComplaint)">Llenar queja</button>
+      </div>
+    </div>
+  </div>
+  <div class="complainmap" ><!--Mapa de Quejas tiene un doublebinding con el modelo de mapa, ojo el zoom solo funciona si el campo varia, si el 
+    campo se mantiene igual el zoom del mapa no cambia-->
+    <!-- Esta es la etiqueta que invoca al mapa, para mas informacion buscar angular google maps (agm) en google-->
+    <agm-map  [latitude]="map.latitude" [longitude]="map.longitude" [zoom]="map.zoom" (mapClick)="close_window()" #gmap>
+      <!-- Etiqueta del marcador-->
+      <agm-marker [visible]="newMarker" [latitude]="map.latitude" [longitude]="map.longitude"  [markerDraggable]="true" (dragEnd)="markerDragEnd($event)">
+      </agm-marker> 
+      <agm-marker *ngFor="let item of complaints" [visible]="!newMarker" [latitude]="item.latitude" [longitude]="item.longitude" [iconUrl]="item.category.icon" (markerClick)="clickedMarker(infowindow)">
+        <!-- Etiqueta que muestra la ventana de informacion del marcador-->
+        <agm-info-window #infowindow>
+          <div class="infow-header">
+            <h2>{{ item.category.name }}</h2>
+          </div><hr>
+          <div class="infow-body">
+            <h4>{{ item.description }}</h4>
+          </div> <hr>
+          <div class="infow-footer">
+            <button type="button" class="btn btn-sm btn-danger" *ngIf="user!=null && user.id==item.user_id" (click)="deleteComplaint(item.id)" >Eliminar</button>
+          </div>
+        </agm-info-window>  
+      </agm-marker>
+    </agm-map>
+  </div> 
+</div>
+<ng-template #mdlComplaint let-modal> <!--Modal de quejas donde se registra la nueva queja-->
+  <form #complaintForm="ngForm" (ngSubmit)="createComplaint()">
+    <div class="modal-header" style="padding-bottom: 0%;">
+      <h1 class="modal-title font-weight-bold" id="modal-basic-title">Llenar queja</h1>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <label class="font-weight-bold" for="selectCategory">Seleccione una categoria</label>
+          <select placeholder="Categoria" class="form-control" [(ngModel)]="newComplaint.category_id" name="category" #category="ngModel" required>
+            <option *ngFor="let item of categories" [value]="item.id" >{{ item.name }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="font-weight-bold" for="textDescription">Descripción de la queja</label>
+          <textarea type="text" class="form-control" name="description" rows="3" [(ngModel)]="newComplaint.description" #description="ngModel" requerid></textarea>
+        </div>
+        <div *ngIf="false" class="form-group">
+          <label class="mb-2" for="inputImage">Adjuntar una imagen</label><br/>
+          <input style="display: none" type="file" name="image" (change)="onFileChange($event)" #fileInput>
+            <button type="button" class="btn btn-primary mr-3" (click)="fileInput.click()">Selecionar imagen</button>
+            <span *ngIf="selectedFile==null">Sin imagen</span>
+            <span style="color:green;" *ngIf="selectedFile!=null">{{selectedFile.name}}</span>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" style="background-color: #b4b4b3;border:#b4b4b3;" (click)="modal.close('cancel')">Cancelar</button>
+      <input type="submit" value="Registrar queja" class="btn btn-primary" [disabled]="newComplaint.description==null||newComplaint.description==''||newComplaint.category_id==null" >
+    </div>
+  </form>
+</ng-template>
+<ng-template #mdlMessage let-mdlmess > <!--Modal de mensajes, para mostar informacion, utilizado para mostrar mensajes cualquiera al usuario-->
+  <div>
+    <div class="modal-header">
+      <h2>Mensaje</h2>
+    </div>
+    <div class="modal-body">
+      <h4>{{ message }}</h4>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="mdlmess.close('cancel')" >Ok</button>
+    </div>
+  </div>
+</ng-template>

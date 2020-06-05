@@ -1,0 +1,14 @@
+{
+    "telemetry.machineId": "209c23a0a90cbc433e0e762f81078e27e98617732015c72bf244ec77bf214656",
+    "openedPathsList": {
+        "workspaces3": [
+            {
+                "id": "68ce5ea3b306fdc82c66f2fcf943cadf",
+                "configURIPath": "file:///c%3A/Users/user/Documents/Repos/AngularLaravel/Monitor/.metadata/codemix.code-workspace"
+            }
+        ],
+        "files2": []
+    },
+    "theme": "vs-dark",
+    "themeBackground": "#1e1e1e"
+}
